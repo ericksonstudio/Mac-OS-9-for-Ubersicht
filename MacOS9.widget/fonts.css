@@ -1,0 +1,16 @@
+@font-face {
+    font-family:'apple garamond';
+    src:url('fonts/applegaramond-light-webfont.woff2') format('woff2'),
+         url('fonts/applegaramond-light-webfont.woff') format('woff'),
+	     url('fonts/applegaramond-light-webfont.ttf') format('truetype');
+    font-weight:normal;
+    font-style:normal;
+}
+@font-face {
+    font-family:'charcoal';
+    src: url('fonts/charcoal-webfont.woff2') format('woff2'),
+         url('fonts/charcoal-webfont.woff') format('woff'),
+         url('fonts/charcoal-webfont.ttf') format('truetype');
+    font-weight:normal;
+    font-style:normal;
+}
