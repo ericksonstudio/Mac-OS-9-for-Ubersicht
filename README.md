@@ -1,4 +1,4 @@
-#Mac OS 9 Startup Simulator Widget
+# Mac OS 9 Startup Simulator Widget
 ===========
 
 Widget for [Übersicht](http://tracesof.net/uebersicht/) that simulates the Mac OS 9 Startup Screen and includes an optional clock. It's scaleable!
