@@ -20,3 +20,5 @@ Some of the settings you can customize at the top of the index.coffee file...
 - `showprogress = true` (`true` = show the progress bar, `false` = hide it)
 - `showclock = true` (show the clock instead of the standard startup stuff -- setting `true` will override the `status`, `barwidth` and `showprogress` vars)
 - `t24hourtime = false` (`true` = clock uses 24-hour time -- default: `false` = 12-hour time)
+- `showbgimg = true` (`true` = shows the widget's tiled background img / `false` = shows your native macOS background)
+- `showbgcolor = true` (`true` = shows the widget's background color / `false` = shows your native macOS background)

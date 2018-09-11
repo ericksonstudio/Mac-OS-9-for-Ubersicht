@@ -8,7 +8,8 @@ barwidth		= "3%" #If you want this "stuck" in a static position, put a percentag
 showprogress	= true #true = show the progress bar, false = hide it
 showclock		= true #show the clock instead of the standard startup stuff (setting true will override the status, barwidth and showprogress vars)
 t24hourtime		= false #true = clock uses 24-hour time (default: false = 12-hour time)
-
+showbgimg		= true #true = shows the widget's tiled background img / false = shows your native macOS background
+showbgcolor		= true #true = shows the widget's background color / false = shows your native macOS background
 
 
 style: """
@@ -26,8 +27,7 @@ style: """
 		left:0
 		width:100%
 		height:100%
-		background-color:#888
-		background:#888 url('MacOS9.widget/images/Mac OS Default.png') repeat 0 0
+		background:none url() repeat 0 0
 	#MacOS9
 		position:absolute
 		width:422px
@@ -43,7 +43,7 @@ style: """
 		transform:translate(-50%,-50%)
 		text-align:center
 		zoom:#{zoom}
-		//hbox-shadow:5px 5px 10px rgba(#000,.25)
+		//box-shadow:5px 5px 10px rgba(#000,.25)
 	#MacOS9 .finder
 		position:relative
 		height:100%
@@ -334,7 +334,15 @@ addZero: (i) ->
 	return i
 
 update: (output,domEl) ->
-	$domEl = $(domEl)
+
+	if showbgimg == true
+		$('#desktop-bg').css('background-image','url("MacOS9.widget/images/Mac OS Default.png")')
+	else
+		$('#desktop-bg').css('background-image','none')
+	if showbgcolor == true
+		$('#desktop-bg').css('background-color','#888')
+	else
+		$('#desktop-bg').css('background-color','none')
 
 	if showprogress == true
 		$('.progress').css("display","block")
