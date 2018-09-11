@@ -147,11 +147,12 @@ style: """
 		border-right:1px solid #000
 		background:#00004a
 		box-shadow:1px 0 1px #4b4b4b
-	#eye-click
-		width:100%
-		height:20%
+	#finder-click
+		width:108px
+		height:114px
 		position:absolute
-		bottom:0
+		top:41px
+		left:156px
 		z-index:2
 
 """
@@ -164,8 +165,8 @@ render: (output) -> """
 		<div class="finder">
 			<div id="finder-click">
 				<audio id="audio1">
-					<source src="HAL9000.widget/sounds/HAL-9000_operational.wav"></source>
-					<source src="HAL9000.widget/sounds/HAL-9000_foolproof.mp3"></source>
+					<source src="MacOS9.widget/sounds/power-mac.m4a"></source>
+					<source src="MacOS9.widget/sounds/quadra.m4a"></source>
 				</audio>
 			</div>
 			<div class="logo">
@@ -324,8 +325,7 @@ render: (output) -> """
 """
 
 afterRender: (domEl) ->
-	$(domEl).on 'click', '#eye-click', =>
-		# @run "say -v Alex 'I am completely operational and all my circuits are functioning perfectly.'"
+	$(domEl).on 'click', '#finder-click', =>
 		@run $(domEl).find('#audio1').get(0).play()
 
 addZero: (i) ->
@@ -380,5 +380,4 @@ update: (output,domEl) ->
 		$('#status').text(status)
 		$('#macprogress').css("width","#{barwidth}%")
 
-		# $('#macprogress').text("#{s}%")
 
