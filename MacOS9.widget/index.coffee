@@ -7,7 +7,7 @@ status			= "Welcome to Mac OS" #"Welcome to Mac OS" was the first default screen
 barwidth		= "3%" #If you want this "stuck" in a static position, put a percentage here
 showprogress	= true #true = show the progress bar, false = hide it
 showclock		= true #show the clock instead of the standard startup stuff (setting true will override the status, barwidth and showprogress vars)
-
+t24hourtime		= false #true = clock uses 24-hour time (default: false = 12-hour time)
 
 
 
@@ -350,6 +350,11 @@ update: (output,domEl) ->
 		s = now.getSeconds()
 		sp = Math.round((s / 60) * 100)
 		meridian = h >= 12 ? 'PM' : 'AM'
+		if t24hourtime==false
+			if h >= 12
+				h = h - 12
+			if h == 0
+				h = 12
 		if meridian == true
 			meridian= 'PM'
 		else
