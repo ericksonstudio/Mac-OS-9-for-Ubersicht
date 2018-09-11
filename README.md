@@ -19,3 +19,4 @@ Some of the settings you can customize at the top of the index.coffee file...
 - `barwidth = "3%"` (If you want this "stuck" in a static position, put a percentage here)
 - `showprogress = true` (`true` = show the progress bar, `false` = hide it)
 - `showclock = true` (show the clock instead of the standard startup stuff -- setting `true` will override the `status`, `barwidth` and `showprogress` vars)
+- `t24hourtime = false` (`true` = clock uses 24-hour time -- default: `false` = 12-hour time)
