@@ -22,3 +22,7 @@ Some of the settings you can customize at the top of the index.coffee file...
 - `t24hourtime = false` (`true` = clock uses 24-hour time -- default: `false` = 12-hour time)
 - `showbgimg = true` (`true` = shows the widget's tiled background img / `false` = shows your native macOS background)
 - `showbgcolor = true` (`true` = shows the widget's background color / `false` = shows your native macOS background)
+
+#New
+- `chime = true` (`true` = plays a chime on the quarter hour / `false` = no chime -- default: `true`)
+- `soundfile = 'MacOS9.widget/sounds/Temple.aiff'` (location of the chime sound file -- default: `'MacOS9.widget/sounds/Temple.aiff'`)

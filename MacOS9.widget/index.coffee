@@ -1,16 +1,17 @@
 refreshFrequency:1000
 
-zoom			= "120%" #100% is Apple's original size. 120% looks better on larger screens, but tweak this as your mileage may vary
+zoom			= "120"#% #100% is Apple's original size. 120% looks better on larger screens, but tweak this as your mileage may vary
 ostext			= "Mac OS 9"
 #------------------#
 status			= "Welcome to Mac OS" #"Welcome to Mac OS" was the first default screen. "Starting Up…" was shown during boot-up.
-barwidth		= "3%" #If you want this "stuck" in a static position, put a percentage here
+barwidth		= "3"#% #If you want this "stuck" in a static position, put a percentage here
 showprogress	= true #true = show the progress bar, false = hide it
 showclock		= true #show the clock instead of the standard startup stuff (setting true will override the status, barwidth and showprogress vars)
 t24hourtime		= false #true = clock uses 24-hour time (default: false = 12-hour time)
 showbgimg		= true #true = shows the widget's tiled background img / false = shows your native macOS background
 showbgcolor		= true #true = shows the widget's background color / false = shows your native macOS background
-
+chime			= true #true (default) = plays a chime on the quarter hour
+soundfile		= 'MacOS9.widget/sounds/Temple.aiff' #location of the chime sound file (default: 'MacOS9.widget/sounds/Temple.aiff')
 
 style: """
 
@@ -20,6 +21,8 @@ style: """
 
 	font-smoothing: antialiased
 	text-rendering: optimizeLegibility
+	backface-visibility:hidden
+	image-rendering:auto
 
 	#desktop-bg
 		position:absolute
@@ -42,7 +45,7 @@ style: """
 		left:50%
 		transform:translate(-50%,-50%)
 		text-align:center
-		zoom:#{zoom}
+		zoom:#{zoom}%
 		//box-shadow:5px 5px 10px rgba(#000,.25)
 	#MacOS9 .finder
 		position:relative
@@ -69,15 +72,17 @@ style: """
 		border:1px solid #000
 	.finder H1
 		position:absolute
-		top:63%
-		left:0
-		width:100%
+		top:60%
+		left:50%
+		transform:translateX(-50%)
+		//max-width:347px
 		margin:auto
-		font:normal 4.3em/1 'apple garamond'
+		font:normal 70px/1.2 'apple garamond'
 		text-align:center
 		letter-spacing:-1.5px
 		color:#000
 		white-space:nowrap
+		overflow:hidden
 	.finder svg
 		position:absolute
 		width:109px
@@ -154,7 +159,21 @@ style: """
 		top:41px
 		left:156px
 		z-index:2
-
+	//Mac Finder SVG Colors:
+	.face-outline
+		fill:#FFF
+	.left-face-bg
+		fill:#4D66CC
+	.right-face-bg
+		fill:#89A1D4
+	.face-middle-line
+		fill:#010101
+	.left-smile-line
+		fill:#09098F
+	.left-eye-line
+		fill:#0A0A90
+	.right-eye-line
+		fill:#010101
 """
 
 
@@ -165,18 +184,17 @@ render: (output) -> """
 		<div class="finder">
 			<div id="finder-click">
 				<audio id="audio1">
-					<source src="MacOS9.widget/sounds/power-mac.m4a"></source>
 					<source src="MacOS9.widget/sounds/quadra.m4a"></source>
+					<source src="MacOS9.widget/sounds/power-mac.m4a"></source>
 				</audio>
 			</div>
 			<div class="logo">
 				<div class="logo-inner"></div>
 				<h1>#{ostext}</h1>
 				<svg version="1.1" id="finder" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-					 width="533.993px" height="558.554px" viewBox="0 0 533.993 558.554" style="enable-background:new 0 0 533.993 558.554;"
-					 xml:space="preserve">
+					 width="533.993px" height="558.554px" viewBox="0 0 533.993 558.554" xml:space="preserve">
 				<g>
-					<path fill="#FFFFFF" style="&st4;" d="M329.459,485.446c0.912-0.019,1.824-0.051,2.737-0.051c66.28-0.002,132.562-0.002,198.843-0.002
+					<path fill="#FFFFFF" class="face-outline" d="M329.459,485.446c0.912-0.019,1.824-0.051,2.737-0.051c66.28-0.002,132.562-0.002,198.843-0.002
 						c0.652,0,1.307,0.013,1.958-0.015c0.747-0.033,0.942-0.213,0.976-0.92c0.031-0.649,0.018-1.304,0.018-1.955
 						c0.001-136.086,0.001-272.171,0.001-408.256c0-0.457,0.001-0.913-0.001-1.37c-0.002-0.261,0.003-0.523-0.018-0.783
 						c-0.052-0.715-0.209-0.875-0.984-0.906c-0.717-0.03-1.436-0.017-2.153-0.017c-70.652,0-141.304,0-211.956,0
@@ -192,7 +210,7 @@ render: (output) -> """
 						c4.097,10.283,8.597,20.386,13.593,30.264c0.193,0.382,0.26,0.879,0.809,1.005c0.54-0.475,1.163-0.801,1.804-1.118
 						c6.008-2.975,12.009-5.963,18.009-8.954c2.18-1.087,2.219-0.672,0.996-3.073c-5.206-10.221-9.622-20.779-13.473-31.579
 						c-2.863-8.031-5.353-16.183-7.622-24.398C330.023,488.118,329.557,486.822,329.459,485.446z"/>
-					<path style="&st2;" fill="#4D66CC" class="left-face-bg" d="M302.226,485.311c-0.781,0.017-1.564,0.047-2.347,0.047c-99.05,0.001-198.099,0.001-297.148,0.001
+					<path fill="#4D66CC" class="left-face-bg" d="M302.226,485.311c-0.781,0.017-1.564,0.047-2.347,0.047c-99.05,0.001-198.099,0.001-297.148,0.001
 						c-0.653,0-1.306,0-1.958-0.028c-0.454-0.019-0.718-0.289-0.742-0.742c-0.027-0.521-0.025-1.043-0.025-1.565
 						c-0.002-3.002-0.001-6.003-0.001-9.004c0-133.241,0-266.481,0-399.723c0-0.652-0.013-1.306,0.005-1.958
 						c0.03-1.085,0.12-1.163,1.284-1.199c0.261-0.008,0.522-0.002,0.783-0.002c0.457,0,0.914,0,1.371,0
@@ -226,7 +244,7 @@ render: (output) -> """
 						c0.002,19.883,0,39.767,0.002,59.651c0,0.456-0.01,0.914,0.029,1.367c0.055,0.66,0.316,0.901,0.997,0.969
 						c0.258,0.026,0.521,0.023,0.781,0.023c7.236,0,14.472,0.006,21.708-0.004c1.688-0.002,1.802-0.133,1.834-1.741
 						c0.01-0.456,0.002-0.913,0.002-1.369C158.812,191.087,158.812,181.374,158.812,171.66z"/>
-					<path style="&st3;" fill="#89A1D4" class="right-face-bg" d="M315.749,71.195c1.043-0.008,2.086-0.022,3.13-0.022c70.652-0.001,141.304-0.001,211.956,0
+					<path fill="#89A1D4" class="right-face-bg" d="M315.749,71.195c1.043-0.008,2.086-0.022,3.13-0.022c70.652-0.001,141.304-0.001,211.956,0
 						c0.718,0,1.437-0.013,2.153,0.017c0.775,0.031,0.933,0.191,0.984,0.906c0.021,0.26,0.016,0.521,0.018,0.783
 						c0.002,0.457,0.001,0.913,0.001,1.37c0,136.085,0,272.17-0.001,408.256c0,0.651,0.014,1.306-0.018,1.955
 						c-0.033,0.707-0.229,0.887-0.976,0.92c-0.651,0.027-1.306,0.015-1.958,0.015c-66.281,0-132.562,0-198.843,0.002
@@ -251,7 +269,7 @@ render: (output) -> """
 						c-1.761-0.001-1.729-0.029-1.717,1.714c0.001,0.131,0,0.261,0,0.392c0,20.03,0,40.059,0.001,60.089
 						c0,0.456,0.006,0.913,0.021,1.368c0.014,0.378,0.226,0.603,0.599,0.623c0.521,0.027,1.043,0.027,1.564,0.028
 						c6.916,0.002,13.832,0.006,20.746-0.002c2.445-0.003,2.2,0.26,2.203-2.187C386.052,191.887,386.047,181.969,386.047,172.053z"/>
-					<path style="&st5;" fill="#010101" class="face-middle-line" d="M315.749,71.195c-0.752,0.56-1.156,1.394-1.66,2.143c-9.064,13.486-17.463,27.375-25.183,41.673
+					<path fill="#010101" class="face-middle-line" d="M315.749,71.195c-0.752,0.56-1.156,1.394-1.66,2.143c-9.064,13.486-17.463,27.375-25.183,41.673
 						c-6.663,12.341-12.804,24.936-18.407,37.791c-5.237,12.015-10.004,24.213-14.31,36.594c-3.47,9.975-6.617,20.049-9.473,30.214
 						c-2.044,7.277-3.907,14.603-5.614,21.968c-1.884,8.125-3.63,16.282-5.089,24.495c-1.061,5.967-2.061,11.946-3.009,17.932
 						c-0.551,3.476-0.951,6.975-1.416,10.464c-0.042,0.314-0.135,0.636,0.087,0.974c0.648,0.303,1.376,0.153,2.081,0.154
@@ -286,7 +304,7 @@ render: (output) -> """
 						c1.948-2.451,3.924-4.879,5.893-7.314c0.832-1.029,0.84-1.028,1.795-0.252c4.911,3.99,9.819,7.982,14.729,11.972
 						c1.267,1.029,2.544,2.042,3.798,3.084c0.704,0.587,0.746,0.959,0.209,1.647c-0.36,0.461-0.772,0.882-1.163,1.32
 						c-14.47,16.234-27.863,33.311-40.154,51.25C316.174,70.253,315.802,70.642,315.749,71.195z"/>
-					<path style="&st0;" fill="#09098F" class="left-smile-line" d="M290.092,385.252c0.478,0.988,0.337,2.05,0.179,3.041c-0.174,1.103-0.188,2.191-0.196,3.29
+					<path fill="#09098F" class="left-smile-line" d="M290.092,385.252c0.478,0.988,0.337,2.05,0.179,3.041c-0.174,1.103-0.188,2.191-0.196,3.29
 						c-0.011,1.168-0.048,2.338,0.005,3.503c0.168,3.688,0.348,7.373,0.333,11.065c-0.006,1.491,0.02,2.983,0.031,4.475
 						c-3.065,0.035-6.139-0.067-9.193,0.131c-9.25,0.601-18.506,0.216-27.757,0.326c-2.738,0.033-5.491,0.124-8.214-0.101
 						c-3.383-0.279-6.775-0.128-10.144-0.399c-2.274-0.184-4.553-0.178-6.819-0.368c-3.369-0.283-6.741-0.52-10.112-0.772
@@ -303,12 +321,12 @@ render: (output) -> """
 						c2.975,0.408,5.98,0.17,8.95,0.631c1.277,0.197,2.606,0.04,3.907,0.124c6.703,0.434,13.413,0.417,20.123,0.417
 						c3.436,0.537,6.903,0.38,10.341,0.234c2.992-0.128,5.98-0.215,8.975-0.24c3.391-0.027,6.781-0.111,10.173-0.072
 						C287.263,385.609,288.662,385.29,290.092,385.252z"/>
-					<path style="&st1;" fill="#0A0A90" class="left-eye-line" d="M158.812,171.66c0,9.714,0,19.428,0,29.141c0,0.457,0.008,0.913-0.002,1.369
+					<path fill="#0A0A90" class="left-eye-line" d="M158.812,171.66c0,9.714,0,19.428,0,29.141c0,0.457,0.008,0.913-0.002,1.369
 						c-0.032,1.608-0.146,1.738-1.834,1.741c-7.236,0.01-14.472,0.004-21.708,0.004c-0.26,0-0.523,0.003-0.781-0.023
 						c-0.681-0.068-0.942-0.309-0.997-0.969c-0.039-0.454-0.029-0.912-0.029-1.367c-0.001-19.884,0-39.768-0.002-59.651
 						c0-2.21-0.1-2.141,2.131-2.14c7.041,0.004,14.081,0.002,21.122,0.002c0.326,0,0.652-0.009,0.978,0.006
 						c0.978,0.045,1.081,0.149,1.118,1.183c0.019,0.521,0.006,1.043,0.006,1.564C158.812,152.233,158.812,161.947,158.812,171.66z"/>
-					<path style="&st5;" fill="#010101" class="right-eye-line" d="M386.047,172.053c0,9.917,0.005,19.834-0.002,29.751c-0.003,2.447,0.242,2.184-2.203,2.187
+					<path fill="#010101" class="right-eye-line" d="M386.047,172.053c0,9.917,0.005,19.834-0.002,29.751c-0.003,2.447,0.242,2.184-2.203,2.187
 						c-6.914,0.009-13.83,0.004-20.746,0.002c-0.521,0-1.044,0-1.564-0.028c-0.373-0.02-0.585-0.244-0.599-0.623
 						c-0.016-0.456-0.021-0.912-0.021-1.368c-0.001-20.03-0.001-40.059-0.001-60.089c0-0.131,0.001-0.261,0-0.392
 						c-0.012-1.744-0.044-1.716,1.717-1.714c7.242,0.003,14.483,0.001,21.726,0.002c0.326,0,0.652,0.009,0.978,0.015
@@ -318,23 +336,16 @@ render: (output) -> """
 			</div><!-- .logo -->
 			<div class="loading">
 				<h3 id="status">#{status}</h3>
-				<div class="progress"><div id="macprogress" class="bar" style="width:#{barwidth}"></div></div>
+				<div class="progress"><div id="macprogress" class="bar" style="width:#{barwidth}%"></div></div>
 			</div><!-- .loading -->
 		</div><!-- .finder -->
 	</div><!-- #MacOS9 -->
 """
 
 afterRender: (domEl) ->
-	$(domEl).on 'click', '#finder-click', =>
-		@run $(domEl).find('#audio1').get(0).play()
-
-addZero: (i) ->
-	if(i < 10)
-		i = "0" + i
-	return i
-
-update: (output,domEl) ->
-
+	$domEl = $(domEl)
+	$domEl.on 'click', '#finder-click', =>
+		@run $domEl.find('#audio1').get(0).play()
 	if showbgimg == true
 		$('#desktop-bg').css('background-image','url("MacOS9.widget/images/Mac OS Default.png")')
 	else
@@ -349,6 +360,15 @@ update: (output,domEl) ->
 	else
 		$('.progress').css("display","none")
 
+
+addZero: (i) ->
+	if(i < 10)
+		i = "0" + i
+	return i
+
+update: (output,domEl) ->
+	$domEl = $(domEl)
+
 	if showclock == true
 		$('.progress').css("display","block")
 		now = new Date()
@@ -361,7 +381,7 @@ update: (output,domEl) ->
 		if t24hourtime==false
 			if h >= 12
 				h = h - 12
-			if h == 0
+			if h == '00'
 				h = 12
 		if meridian == true
 			meridian= 'PM'
@@ -384,8 +404,14 @@ update: (output,domEl) ->
 		else
 			$('#macprogress').css("display","block")
 			$('#macprogress').css("width","#{sp}%")
+
+
 	else
 		$('#status').text(status)
 		$('#macprogress').css("width","#{barwidth}%")
 
-
+	if chime == true
+		sound = new Audio(soundfile)
+		sound.loop = false
+		if (m == '00' && s == 0) || (m == 15 && s == 0) || (m == 30 && s == 0) || (m == 45 && s == 0)
+			@run sound.play()
