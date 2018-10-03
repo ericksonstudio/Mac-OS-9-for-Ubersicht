@@ -346,14 +346,7 @@ afterRender: (domEl) ->
 	$domEl = $(domEl)
 	$domEl.on 'click', '#finder-click', =>
 		@run $domEl.find('#audio1').get(0).play()
-	if showbgimg == true
-		$('#desktop-bg').css('background-image','url("MacOS9.widget/images/Mac OS Default.png")')
-	else
-		$('#desktop-bg').css('background-image','none')
-	if showbgcolor == true
-		$('#desktop-bg').css('background-color','#888')
-	else
-		$('#desktop-bg').css('background-color','none')
+
 
 	if showprogress == true
 		$('.progress').css("display","block")
@@ -368,6 +361,16 @@ addZero: (i) ->
 
 update: (output,domEl) ->
 	$domEl = $(domEl)
+
+	if showbgimg == true
+		$('#desktop-bg').css('background-image','url("MacOS9.widget/images/Mac OS Default.png")')
+	else
+		$('#desktop-bg').css('background-image','none')
+
+	if showbgcolor == true
+		$('#desktop-bg').css('background-color','#888')
+	else
+		$('#desktop-bg').css('background-color','none')
 
 	if showclock == true
 		$('.progress').css("display","block")
