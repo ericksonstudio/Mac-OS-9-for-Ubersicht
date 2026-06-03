@@ -1,17 +1,20 @@
 refreshFrequency:1000
 
+# Mac OS 9 Startup Simulator Widget v1.3.0
 zoom			= "120"#% #100% is Apple's original size. 120% looks better on larger screens, but tweak this as your mileage may vary
-ostext			= "Mac OS 9"
+ostext			= "Mac OS 9.2"
 #------------------#
-status			= "Welcome to Mac OS" #"Welcome to Mac OS" was the first default screen. "Starting Up…" was shown during boot-up.
+status			= "Starting Up…" #"Welcome to Mac OS" was the first default screen. "Starting Up…" was shown during boot-up.
 barwidth		= "3"#% #If you want this "stuck" in a static position, put a percentage here
 showprogress	= true #true = show the progress bar, false = hide it
 showclock		= true #show the clock instead of the standard startup stuff (setting true will override the status, barwidth and showprogress vars)
 t24hourtime		= false #true = clock uses 24-hour time (default: false = 12-hour time)
-showbgimg		= true #true = shows the widget's tiled background img / false = shows your native macOS background
-showbgcolor		= true #true = shows the widget's background color / false = shows your native macOS background
-chime			= true #true (default) = plays a chime on the quarter hour
+showbgimg		= false #true = shows the widget's tiled background img / false = shows your native macOS background (default)
+showbgcolor		= false #true = shows the widget's background color / false = shows your native macOS background (default)
+showshadow		= false #true = shows a drop shadow behind the widget / false = does not show a drop shadow (default)
+chime			= true #true (default) = plays a chime on the quarter hour / false = silent
 soundfile		= 'MacOS9.widget/sounds/Temple.aiff' #location of the chime sound file (default: 'MacOS9.widget/sounds/Temple.aiff')
+#------------------#
 
 style: """
 
@@ -46,7 +49,6 @@ style: """
 		transform:translate(-50%,-50%)
 		text-align:center
 		zoom:#{zoom}%
-		//box-shadow:5px 5px 10px rgba(#000,.25)
 	#MacOS9 .finder
 		position:relative
 		height:100%
@@ -78,6 +80,7 @@ style: """
 		//max-width:347px
 		margin:auto
 		font:normal 70px/1.2 'apple garamond'
+		//font-size:2.25vw
 		text-align:center
 		letter-spacing:-1.5px
 		color:#000
@@ -346,12 +349,9 @@ afterRender: (domEl) ->
 	$domEl = $(domEl)
 	$domEl.on 'click', '#finder-click', =>
 		@run $domEl.find('#audio1').get(0).play()
+	sound = new Audio(soundfile)
+	sound.loop = false
 
-
-	if showprogress == true
-		$('.progress').css("display","block")
-	else
-		$('.progress').css("display","none")
 
 
 addZero: (i) ->
@@ -361,6 +361,11 @@ addZero: (i) ->
 
 update: (output,domEl) ->
 	$domEl = $(domEl)
+
+	if showprogress == true
+		$('.progress').css("display","block")
+	else
+		$('.progress').css("display","none")
 
 	if showbgimg == true
 		$('#desktop-bg').css('background-image','url("MacOS9.widget/images/Mac OS Default.png")')
@@ -372,24 +377,28 @@ update: (output,domEl) ->
 	else
 		$('#desktop-bg').css('background-color','none')
 
+	if showshadow == true
+		$('#MacOS9').css('box-shadow','5px 5px 10px rgba(0,0,0,.25)')
+	else
+		$('#MacOS9').css('box-shadow','none')
+
 	if showclock == true
 		$('.progress').css("display","block")
 		now = new Date()
 		d = now.getDay()
-		h = @addZero(now.getHours())
+		rawh = now.getHours()
 		m = @addZero(now.getMinutes())
 		s = now.getSeconds()
 		sp = Math.round((s / 60) * 100)
-		meridian = h >= 12 ? 'PM' : 'AM'
-		if t24hourtime==false
-			if h >= 12
-				h = h - 12
-			if h == '00'
+		meridian = if rawh >= 12 then 'PM' else 'AM'
+
+		if t24hourtime == false
+			h = rawh % 12
+			if h == 0
 				h = 12
-		if meridian == true
-			meridian= 'PM'
 		else
-			meridian = 'AM'
+			h = @addZero(rawh)
+
 		weekday = new Array(7)
 		weekday[0] = "Sun"
 		weekday[1] = "Mon"
@@ -414,7 +423,18 @@ update: (output,domEl) ->
 		$('#macprogress').css("width","#{barwidth}%")
 
 	if chime == true
-		sound = new Audio(soundfile)
-		sound.loop = false
-		if (m == '00' && s == 0) || (m == 15 && s == 0) || (m == 30 && s == 0) || (m == 45 && s == 0)
+		if (m == '00' && s == 0) || (m == '15' && s == 0) || (m == '30' && s == 0) || (m == '45' && s == 0)
 			@run sound.play()
+
+
+
+
+
+
+
+
+
+
+
+# Created by Paul Erickson | paulerickson.com / ericksonstudio.com
+# Copyright ©2018-2026 Erickson Marketing Studio, LLC.
