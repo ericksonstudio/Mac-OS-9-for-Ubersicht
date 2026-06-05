@@ -1,23 +1,44 @@
 refreshFrequency:1000
 
-# Mac OS 9 Startup Simulator Widget v1.3.1
-zoom			= "120"#% #100% is Apple's original size. 120% looks better on larger screens, but tweak this as your mileage may vary
-ostext			= "Mac OS 9.2"
-#------------------#
-status			= "Starting Up…" #"Welcome to Mac OS" was the first default screen. "Starting Up…" was shown during boot-up.
-barwidth		= "3"#% #If you want this "stuck" in a static position, put a percentage here
-showprogress	= true #true = show the progress bar, false = hide it
-showclock		= true #show the clock instead of the standard startup stuff (setting true will override the status, barwidth and showprogress vars)
-t24hourtime		= false #true = clock uses 24-hour time (default: false = 12-hour time)
-showbgimg		= false #true = shows the widget's tiled background img / false = shows your native macOS background (default)
-showbgcolor		= false #true = shows the widget's background color / false = shows your native macOS background (default)
-showshadow		= false #true = shows a drop shadow behind the widget / false = does not show a drop shadow (default)
-chime			= true #true (default) = plays a chime on the quarter hour / false = silent
-soundfile		= 'MacOS9.widget/sounds/Temple.aiff' #location of the chime sound file (default: 'MacOS9.widget/sounds/Temple.aiff')
-#------------------#
+# Mac OS 9 Startup Simulator Widget v1.4.0
+#----appearance--------------------#
+zoom				= "120" #% Controls the size of the widget. #100% is Apple's original size. 120% looks better on larger screens, but tweak this as your mileage may vary.
+ostext				= "Mac OS 9.2" #Default: Mac OS 9.2
+showbgimg			= false #true = shows the widget's tiled background img / false = shows your native macOS background (default).
+showbgcolor			= false #true = shows the widget's background color / false = shows your native macOS background (default).
+showshadow			= false #true = shows a drop shadow behind the widget / false = does not show a drop shadow (default).
+#----standard startup screen-------#
+status				= "Welcome to Mac OS" #"Welcome to Mac OS" was the first default screen.
+barwidth			= "3" #% #If you want this "stuck" in a static position, put a percentage here.
+showprogress		= true #true = show the progress bar, false = hide it.
+#----clock mode--------------------#
+showclock			= true #show the clock instead of the standard startup stuff (setting true will override the status, barwidth and showprogress vars).
+t24hourtime			= false #true = clock uses 24-hour time (default: false = 12-hour time).
+#----quarter-hour chime------------#
+chime				= true #true (default) = plays a chime on the quarter hour / false = silent.
+soundfile			= 'MacOS9.widget/sounds/Temple.aiff' #location of the chime sound file (default: 'MacOS9.widget/sounds/Temple.aiff').
+#----start-up simulation-----------#
+startupBoot			= true #false means no "Starting Up…" bar or startupSound will be loaded (default: true).
+startupStatus		= "Starting Up…" #Status message displayed during startup.
+startupDuration		= 5000 #Duration of the startup sequence in milliseconds.
+startupSound		= true #Plays a startup sound when the widget loads.
+startupSoundFile	= 'MacOS9.widget/sounds/quadra.m4a' #location of the start-up sound file (default: 'MacOS9.widget/sounds/quadra.m4a' -- 'power-mac.m4a' is also available).
+#----end configuration-------------#
 
-sound = null
-lastChime = null
+
+
+
+
+
+
+
+
+
+sound			= null
+lastChime		= null
+startupStart	= null
+startupComplete	= false
+startupAudio	= null
 
 style: """
 
@@ -190,8 +211,8 @@ render: (output) -> """
 		<div class="finder">
 			<div id="finder-click">
 				<audio id="audio1">
-					<source src="MacOS9.widget/sounds/quadra.m4a"></source>
 					<source src="MacOS9.widget/sounds/power-mac.m4a"></source>
+					<source src="MacOS9.widget/sounds/quadra.m4a"></source>
 				</audio>
 			</div>
 			<div class="logo">
@@ -353,11 +374,18 @@ afterRender: (domEl) ->
 
 	sound = new Audio(soundfile)
 	sound.loop = false
-	
+
+	if startupBoot == true
+		startupAudio = new Audio(startupSoundFile)
+		startupAudio.loop = false
+
+		if startupSound == true
+			startupAudio.play()
+	else
+		startupComplete = true
+
 	$domEl.on 'click', '#finder-click', =>
 		@run $domEl.find('#audio1').get(0).play()
-
-
 
 addZero: (i) ->
 	if(i < 10)
@@ -366,6 +394,25 @@ addZero: (i) ->
 
 update: (output,domEl) ->
 	$domEl = $(domEl)
+
+	if startupBoot == true && startupComplete == false
+		now = new Date()
+
+		if startupStart == null
+			startupStart = now.getTime()
+
+		elapsed = now.getTime() - startupStart
+		progress = Math.min(Math.round((elapsed / startupDuration) * 100), 100)
+
+		$('#status').text(startupStatus)
+		$('.progress').css("display","block")
+		$('#macprogress').css("display","block")
+		$('#macprogress').css("width","#{progress}%")
+
+		if elapsed >= startupDuration
+			startupComplete = true
+
+		return
 
 	if showprogress == true
 		$('.progress').css("display","block")

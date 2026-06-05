@@ -10,22 +10,79 @@ Widget for [Übersicht](http://tracesof.net/uebersicht/) that simulates the Mac 
 - Unzip the downloaded file
 - Put the extracted folder 'MacOS9.widget' in your Übersicht widgets folder (usually ~/Library/Application Support/Übersicht/widgets)
 
-## Info
-Some of the settings you can customize at the top of the index.coffee file...
+## Configuration
 
-- `zoom = "120%"` (100% is Apple's original size. 120% looks better on larger screens, but tweak this as your mileage may vary)
-- `ostext = "Mac OS 9"` (Change to whatever you want that fits the space)
-- `status = "Welcome to Mac OS"` ("Welcome to Mac OS" was the first default screen. `"Starting Up…"` was shown during boot-up.)
-- `barwidth = "3%"` (If you want this "stuck" in a static position, put a percentage here)
-- `showprogress = true` (`true` = show the progress bar, `false` = hide it)
-- `showclock = true` (show the clock instead of the standard startup stuff -- setting `true` will override the `status`, `barwidth` and `showprogress` vars)
-- `t24hourtime = false` (`true` = clock uses 24-hour time -- default: `false` = 12-hour time)
-- `showbgimg = true` (`true` = shows the widget's tiled background img / `false` = shows your native macOS background)
-- `showbgcolor = true` (`true` = shows the widget's background color / `false` = shows your native macOS background)
+The widget can be customized by editing the variables at the top of index.coffee.
 
-## New
-- Fixed 12-hour clock display (no more `0:xx PM` at noon)
+### Appearance
+
+- `zoom = "120%"`
+  Controls the size of the widget. 100% matches Apple's original startup screen size.
+
+- `ostext = "Mac OS 9"`
+  Change the operating system text shown beneath the Happy Mac icon.
+
+- `showbgimg = true`
+  Shows the widget's tiled background image.
+
+- `showbgcolor = true`
+  Shows the widget's background color.
+
+### Standard Startup Screen
+
+- `status = "Welcome to Mac OS"`
+  Text displayed beneath the progress bar.
+
+- `barwidth = "3%"`
+  Sets the progress bar width.
+
+- `showprogress = true`
+  Shows or hides the progress bar.
+
+### Clock Mode
+
+- `showclock = true`
+  Replaces the standard startup screen with a live clock.
+
+- `t24hourtime = false`
+  Use 24-hour time (true) or 12-hour time (false).
+
+When Clock Mode is enabled, the progress bar becomes a minute-progress indicator.
+
+### Startup Simulation
+
+- `startupBoot = true`
+  Enables the simulated Mac startup sequence.
+
+- `startupDuration = 5000`
+  Duration of the startup sequence in milliseconds.
+
+- `startupStatus = "Starting Up…"`
+  Status message displayed during startup.
+
+- `startupSound = true`
+  Plays a startup sound when the widget loads.
+
+- `startupSoundFile = 'MacOS9.widget/sounds/quadra.m4a'`
+  Startup sound to play when the widget loads.
+
+### Quarter-Hour Chime
+
+- `chime = true`
+  Plays a sound at the top, quarter past, half past, and quarter to each hour.
+
+- `soundfile = 'MacOS9.widget/sounds/Temple.aiff'`
+  Sound file used for the quarter-hour chime.
+
+## New in v1.4.0
+
+- Added simulated Mac startup sequence
+- Added optional startup sound support
+- Added configurable startup duration
+- Added configurable startup status text
+- Added startup sequence enable/disable switch
+- Fixed 12-hour clock display (12:xx PM now displays correctly)
 - Added quarter-hour chime support
-- Added optional custom chime file support
+- Added optional custom chime files
 - Fixed chime playback stability issues
 - Clock mode progress bar now represents progress through the current minute
