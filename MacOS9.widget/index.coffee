@@ -1,6 +1,6 @@
 refreshFrequency:1000
 
-# Mac OS 9 Startup Simulator Widget v1.3.0
+# Mac OS 9 Startup Simulator Widget v1.3.1
 zoom			= "120"#% #100% is Apple's original size. 120% looks better on larger screens, but tweak this as your mileage may vary
 ostext			= "Mac OS 9.2"
 #------------------#
@@ -15,6 +15,9 @@ showshadow		= false #true = shows a drop shadow behind the widget / false = does
 chime			= true #true (default) = plays a chime on the quarter hour / false = silent
 soundfile		= 'MacOS9.widget/sounds/Temple.aiff' #location of the chime sound file (default: 'MacOS9.widget/sounds/Temple.aiff')
 #------------------#
+
+sound = null
+lastChime = null
 
 style: """
 
@@ -347,10 +350,12 @@ render: (output) -> """
 
 afterRender: (domEl) ->
 	$domEl = $(domEl)
-	$domEl.on 'click', '#finder-click', =>
-		@run $domEl.find('#audio1').get(0).play()
+
 	sound = new Audio(soundfile)
 	sound.loop = false
+	
+	$domEl.on 'click', '#finder-click', =>
+		@run $domEl.find('#audio1').get(0).play()
 
 
 
@@ -423,8 +428,12 @@ update: (output,domEl) ->
 		$('#macprogress').css("width","#{barwidth}%")
 
 	if chime == true
-		if (m == '00' && s == 0) || (m == '15' && s == 0) || (m == '30' && s == 0) || (m == '45' && s == 0)
-			@run sound.play()
+		chimeKey = "#{d}-#{h}-#{m}"
+
+		if ((m == '00') || (m == '15') || (m == '30') || (m == '45')) && s == 0 && chimeKey != lastChime
+			lastChime = chimeKey
+			sound.currentTime = 0
+			sound.play()
 
 
 

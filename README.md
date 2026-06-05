@@ -25,6 +25,7 @@ Some of the settings you can customize at the top of the index.coffee file...
 
 ## New
 - Fixed 12-hour clock display (no more `0:xx PM` at noon)
-- Quarter-hour chime support
-- Optional custom chime file
+- Added quarter-hour chime support
+- Added optional custom chime file support
+- Fixed chime playback stability issues
 - Clock mode progress bar now represents progress through the current minute
