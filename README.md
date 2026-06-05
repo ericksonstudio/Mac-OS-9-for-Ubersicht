@@ -2,7 +2,12 @@
 
 Widget for [Übersicht](http://tracesof.net/uebersicht/) that simulates the Mac OS 9 Startup Screen with optional clock, quarter-hour chime, and startup sounds.
 
-![MacOS9.widget in action](screenshot.png)
+## Screenshots
+### Startup Simulation
+![Startup Simulation](screenshot.png)
+
+### Clock Mode
+![Clock Mode](screenshot-clock.png)
 
 ## Installation
 - Install [Übersicht](http://tracesof.net/uebersicht/) (if not already done)
